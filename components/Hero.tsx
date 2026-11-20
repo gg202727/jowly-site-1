@@ -94,6 +94,10 @@ export default function Hero() {
       }}
       className="group relative h-screen min-h-[560px] overflow-hidden bg-bg"
     >
+      {/* Titre principal pour Google et les lecteurs d'écran (invisible à l'écran) */}
+      <h1 className="sr-only">
+        JOWLY (Jérôme Gobin), réalisateur de clips, monteur, VFX et pilote de drone
+      </h1>
       <AnimatePresence>
         {showIntro ? (
           <motion.div
