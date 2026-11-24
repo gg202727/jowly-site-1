@@ -9,6 +9,9 @@ export default function About() {
         <ul className="md:col-span-9 md:columns-2 text-[clamp(1.2rem,2.2vw,2rem)] leading-normal">
           {SITE.skills.map((s) => <li key={s} className="transition-colors hover:text-neon">{s}</li>)}
         </ul>
+        <p className="max-w-xl text-base leading-relaxed text-white/70 md:col-span-9 md:col-start-4">
+          Jowly. Réalisateur. Vidéos, clips & short films.
+        </p>
       </Reveal>
     </section>
   );

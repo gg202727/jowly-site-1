@@ -5,13 +5,12 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PROJECTS, type Project } from "@/data/projects";
 import { REEL } from "@/data/reel";
 import VideoModal from "./VideoModal";
-import { asset } from "@/lib/asset";
 
 type Clip = { project: Project; clip?: string; start?: number; duration: number; fit?: "cover" | "contain" };
 
 // Le logo (2 s) est une intro : il n'est pas une slide (pas de segment, pas de flèche, il ne revient pas).
 const INTRO_MS = 2700; // logo 2,06 s + délai de lecture : onEnded passe à la suite avant
-const TAGLINE = "Studio de création vidéo indépendant. Clip, publicité, contenu de marque.";
+const TAGLINE = "Jowly. Réalisateur. Vidéos, clips & short films.";
 
 const CLIPS: Clip[] = REEL.flatMap((r): Clip[] => {
   const project = PROJECTS.find((p) => p.id === r.id);
@@ -19,7 +18,7 @@ const CLIPS: Clip[] = REEL.flatMap((r): Clip[] => {
 });
 
 function Media({ s }: { s: Clip }) {
-  if (s.clip) return <video src={asset(s.clip)} autoPlay muted loop playsInline preload="auto" className={`h-full w-full ${s.fit === "contain" ? "object-contain" : "object-cover"}`} />;
+  if (s.clip) return <video src={s.clip} autoPlay muted loop playsInline preload="auto" className={`h-full w-full ${s.fit === "contain" ? "object-contain" : "object-cover"}`} />;
   if (s.start !== undefined) {
     const src = `https://www.youtube-nocookie.com/embed/${s.project.id}?autoplay=1&mute=1&controls=0&disablekb=1&modestbranding=1&rel=0&playsinline=1&start=${s.start}&end=${s.start + Math.ceil(s.duration) + 1}`;
     return (
@@ -29,7 +28,7 @@ function Media({ s }: { s: Clip }) {
   }
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <motion.img src={asset(s.project.thumb) ?? `https://i.ytimg.com/vi/${s.project.id}/maxresdefault.jpg`} alt=""
+    <motion.img src={s.project.thumb ?? `https://i.ytimg.com/vi/${s.project.id}/maxresdefault.jpg`} alt=""
       initial={{ scale: 1 }} animate={{ scale: 1.12 }} transition={{ duration: s.duration + 1, ease: "linear" }}
       className="h-full w-full object-cover" />
   );
@@ -94,10 +93,6 @@ export default function Hero() {
       }}
       className="group relative h-screen min-h-[560px] overflow-hidden bg-bg"
     >
-      {/* Titre principal pour Google et les lecteurs d'écran (invisible à l'écran) */}
-      <h1 className="sr-only">
-        JOWLY (Jérôme Gobin), réalisateur de clips, monteur, VFX et pilote de drone
-      </h1>
       <AnimatePresence>
         {showIntro ? (
           <motion.div
@@ -107,11 +102,11 @@ export default function Hero() {
             exit={{ opacity: 1, transition: { duration: 0.7 } }}
             transition={{ duration: 0.9 }}
           >
-            <video ref={logoRef} muted playsInline preload="auto" poster={asset("/logo-poster.jpg")}
+            <video ref={logoRef} muted playsInline preload="auto" poster="/logo-poster.jpg"
               onEnded={() => playing && setIntro(false)} aria-label="Logo JOWLY animé"
               className="block h-[min(78vh,820px)] w-auto max-w-[92vw] mix-blend-lighten">
-              <source src={asset("/logo-loop.webm")} type="video/webm" />
-              <source src={asset("/logo-loop.mp4")} type="video/mp4" />
+              <source src="/logo-loop.webm" type="video/webm" />
+              <source src="/logo-loop.mp4" type="video/mp4" />
             </video>
           </motion.div>
         ) : (
@@ -147,7 +142,9 @@ export default function Hero() {
         )}
       </div>
 
-      <a href="#work" data-cursor="link" className="absolute bottom-14 right-5 z-20 text-xs text-white/70 md:right-8">Scroll</a>
+      <div data-nosnippet className="absolute bottom-14 right-5 z-20 text-xs text-white/70 md:right-8">
+        <a href="#work" data-cursor="link">Scroll</a>
+      </div>
 
       {!showIntro && (
         <>

@@ -13,7 +13,7 @@ export default function Work() {
 
   return (
     <section id="work" className="pb-24">
-      <div className="sticky top-0 z-40 flex items-center gap-6 overflow-x-auto bg-gradient-to-b from-bg from-70% to-transparent px-5 pb-4 pt-[72px] text-sm md:px-8">
+      <div data-nosnippet className="sticky top-0 z-40 flex items-center gap-6 overflow-x-auto bg-gradient-to-b from-bg from-70% to-transparent px-5 pb-4 pt-[72px] text-sm md:px-8">
         {CATEGORIES.map((c) => (
           <button key={c} data-cursor="link" onClick={() => setCat(c)}
             className={`transition-colors ${c === cat ? "text-white underline decoration-1 underline-offset-[6px]" : "text-muted hover:text-white"}`}>

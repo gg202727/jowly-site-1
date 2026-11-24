@@ -8,6 +8,7 @@ export default function Page() {
   return (
     <main>
       <Header />
+      <h1 className="sr-only">Jowly. Réalisateur. Vidéos, clips & short films.</h1>
       <Hero />
       <Work />
       <About />
