@@ -10,7 +10,10 @@ export default function About() {
           {SITE.skills.map((s) => <li key={s} className="transition-colors hover:text-neon">{s}</li>)}
         </ul>
         <p className="max-w-xl text-base leading-relaxed text-white/70 md:col-span-9 md:col-start-4">
-          Jowly. Réalisateur. Vidéos, clips & short films.
+          Jowly. Réalisateur. Vidéos, clips & short films.{" "}
+          <span data-nosnippet>
+            Réalisateur de clips, monteur, artiste VFX et pilote de drone, Jowly est un studio de création vidéo indépendant à Paris : clips musicaux, publicité et contenu de marque.
+          </span>
         </p>
       </Reveal>
     </section>

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Project } from "@/data/projects";
-import { asset } from "@/lib/asset";
+import { filmPath } from "@/lib/slug";
 
 // Au survol, l'extrait du clip se lance en fondu par-dessus la miniature. Quand la souris sort, la miniature revient.
 export default function ProjectCard({ project, onOpen }: { project: Project; onOpen: (p: Project) => void }) {
@@ -10,13 +10,14 @@ export default function ProjectCard({ project, onOpen }: { project: Project; onO
   const [broken, setBroken] = useState(false);
   const [res, setRes] = useState("maxresdefault"); // repli : hqdefault si la haute définition YouTube n'existe pas
 
-  const src = asset(project.thumb) ?? `https://i.ytimg.com/vi/${project.id}/${res}.jpg`;
+  const src = project.thumb ?? `https://i.ytimg.com/vi/${project.id}/${res}.jpg`;
   const on = () => setHover(true);
   const off = () => { setHover(false); setReady(false); };
 
   return (
-    <button
-      type="button" data-cursor="play" onClick={() => onOpen(project)}
+    <a
+      href={filmPath(project)} data-cursor="play"
+      onClick={(e) => { e.preventDefault(); onOpen(project); }}
       onMouseEnter={on} onMouseLeave={off} onFocus={on} onBlur={off}
       aria-label={`Lire ${project.title}`}
       className="group relative block aspect-video w-full overflow-hidden bg-surface text-left"
@@ -24,14 +25,14 @@ export default function ProjectCard({ project, onOpen }: { project: Project; onO
       {!broken && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={src} alt="" loading="lazy"
+          src={src} alt={`${project.category} ${project.title}${project.who ? ` (${project.who})` : ""} réalisé par Jowly`} loading="lazy"
           onError={() => (project.thumb || res !== "maxresdefault" ? setBroken(true) : setRes("hqdefault"))}
           className="h-full w-full object-cover"
         />
       )}
       {hover && project.preview && (
         <video
-          src={asset(project.preview)} autoPlay muted loop playsInline preload="auto" onCanPlay={() => setReady(true)}
+          src={project.preview} autoPlay muted loop playsInline preload="auto" onCanPlay={() => setReady(true)}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${ready ? "opacity-100" : "opacity-0"}`}
         />
       )}
@@ -39,6 +40,6 @@ export default function ProjectCard({ project, onOpen }: { project: Project; onO
         <h3 className="font-display text-2xl font-medium leading-tight tracking-tight md:text-[1.75rem]">{project.title}</h3>
         {project.who && <p className="mt-1 text-[13px] text-white/60">{project.who}</p>}
       </div>
-    </button>
+    </a>
   );
 }

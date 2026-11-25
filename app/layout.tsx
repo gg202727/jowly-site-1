@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/lib/site";
-import { PROJECTS } from "@/data/projects";
 
 const syne = Inter_Tight({ subsets: ["latin"], variable: "--font-syne" }); // titres
 const grotesk = Inter({ subsets: ["latin"], variable: "--font-grotesk" }); // textes
@@ -29,19 +28,6 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESC, images: ["/og.jpg"] },
 };
 
-// Chaque film : Google comprend que c'est une vidéo réalisée par Jowly (l'année sert de date approximative)
-const videos = PROJECTS.map((p) => ({
-  "@type": "VideoObject",
-  "@id": `${URL_SITE}/#video-${p.id}`,
-  name: p.who ? `${p.title} (${p.who})` : p.title,
-  description: `${p.category} ${p.title}${p.who ? `, ${p.who}` : ""}. Réalisé par Jowly en ${p.year}.`,
-  thumbnailUrl: p.thumb ? `${URL_SITE}${p.thumb}` : `https://i.ytimg.com/vi/${p.id}/hqdefault.jpg`,
-  uploadDate: `${p.year}-01-01`,
-  embedUrl: `https://www.youtube.com/embed/${p.id}`,
-  director: { "@id": `${URL_SITE}/#jowly` },
-  inLanguage: "fr-FR",
-}));
-
 // Données structurées : disent à Google que « Jowly » est un réalisateur, avec ses pages officielles
 const jsonLd = {
   "@context": "https://schema.org",
@@ -50,10 +36,9 @@ const jsonLd = {
     {
       "@type": "Person", "@id": `${URL_SITE}/#jowly`, name: "Jowly", alternateName: "JOWLY",
       jobTitle: "Réalisateur", url: `${URL_SITE}/`,
-      description: "Réalisateur de clips, monteur et artiste VFX. Vidéos, clips musicaux et short films.",
+      description: DESC,
       sameAs: SITE.socials.map((s) => s.href),
     },
-    ...videos,
   ],
 };
 
@@ -62,10 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={`${syne.variable} ${grotesk.variable}`}>
       <body className="font-sans">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-        {/* Aucun texte de la page ne peut servir d'extrait dans Google : il ne reste que ta description (meta description) */}
-        <div data-nosnippet className="contents">
-          {children}
-        </div>
+        {children}
       </body>
     </html>
   );
