@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import type { Project } from "@/data/projects";
-import { filmPath } from "@/lib/slug";
 
 // Au survol, l'extrait du clip se lance en fondu par-dessus la miniature. Quand la souris sort, la miniature revient.
 export default function ProjectCard({ project, onOpen }: { project: Project; onOpen: (p: Project) => void }) {
@@ -15,9 +14,9 @@ export default function ProjectCard({ project, onOpen }: { project: Project; onO
   const off = () => { setHover(false); setReady(false); };
 
   return (
-    <a
-      href={filmPath(project)} data-cursor="play"
-      onClick={(e) => { e.preventDefault(); onOpen(project); }}
+    <button
+      type="button" data-cursor="play"
+      onClick={() => onOpen(project)}
       onMouseEnter={on} onMouseLeave={off} onFocus={on} onBlur={off}
       aria-label={`Lire ${project.title}`}
       className="group relative block aspect-video w-full overflow-hidden bg-surface text-left"
@@ -40,6 +39,6 @@ export default function ProjectCard({ project, onOpen }: { project: Project; onO
         <h3 className="font-display text-2xl font-medium leading-tight tracking-tight md:text-[1.75rem]">{project.title}</h3>
         {project.who && <p className="mt-1 text-[13px] text-white/60">{project.who}</p>}
       </div>
-    </a>
+    </button>
   );
 }
